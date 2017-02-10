@@ -15,15 +15,43 @@ public class ClientReceiver extends Thread {
 
 public void run() {
     // Print to the user whatever we get from the server:
-
+	
     try {
       while (ServerSender.currentThread().isInterrupted()==false) {
         String s = server.readLine(); // Matches FFFFF in ServerSender.java
-        if(s.equals("From Server: You have been disconnected.")==true){
+       // ClientSender.nickname="";
+        if(s.equals("From List: Already exist") || s.equals("Already exist")){
+        	ClientSender.log=false;
+        	System.out.println(s);
+        }
+        else if(s.equals("From List: Succesfully loggedout") || s.equals("Succesfully loggedout")){
+        	ClientSender.log=false;
+        	System.out.println(s);
+        }
+        else if(s.equals("From List: User doesn't exist") || s.equals("User doesn't exist")){
+        	ClientSender.log=false;
+        	System.out.println(s);
+        }
+        else if(s.equals("From List: Succesfully registered") || s.equals("Succesfully registered")){
+        	ClientSender.log=true;
+        	System.out.println(s);
+        }
+        else if(s.equals("From List: Succesfully loggedin") || s.equals("Succesfully loggedin")){
+        	ClientSender.log=true;
+        	System.out.println(s);
+        }
+        else if(s.equals("From List: Already login") || s.equals("Already login")){
+        	ClientSender.log=false;
+        	System.out.println(s);
+        }
+        else if(s.equals("From Server: You have been disconnected.") || s.equals("You have been disconnected.")){
             System.out.println(s);
             ClientReceiver.quit=true;
+            ClientSender.log=false;
             return;
         }
+        
+      
         else if (s != null){
           System.out.println(s);
         }
