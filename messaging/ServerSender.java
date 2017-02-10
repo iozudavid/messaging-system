@@ -23,7 +23,6 @@ public class ServerSender extends Thread {
 			  client.println(s);
 		  }
 		  messagesList.remove(name);
-		  messagesList.get();
 	  }
     while (true) {
       Message msg = clientQueue.take(); // Matches EEEEE in ServerReceiver
