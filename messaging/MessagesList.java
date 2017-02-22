@@ -13,8 +13,15 @@ public class MessagesList {
 			return false;
 		}
 		
-		public void add(String s, ArrayList<String> s2){
-				messages.put(s, s2);
+		public void add(String userName, String message){
+			if (verify(userName) == true) {
+				getList(userName).add(message);
+			} else {
+				ArrayList<String> list = new ArrayList<String>();
+				list.add(message);
+				messages.put(userName, list);
+			}
+				
 		}
 		
 		public ArrayList<String> getList(String s){

@@ -11,7 +11,7 @@ public class MessageQueue {
   public void offer(Message m) {
     queue.offer(m);
   }
-
+  
   // Retrieves and removes the head of this queue, waiting if
   // necessary until an element becomes available.
   public Message take() {

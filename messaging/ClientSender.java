@@ -104,8 +104,206 @@ public class ClientSender extends Thread {
 					server.println(text);
 				} 
 				
+				else if (action.equals("create group") && log==true) {
+					
+					System.out.println("Insert group's name: ");
+					String recipient = user.readLine();
+					System.out.println("Insert group's visibility: ");
+					String v = user.readLine();
+					if(v.equals("public")==true || v.equals("private")==true){
+						server.println("create group");
+						server.println(recipient);
+						server.println(v);
+					}
+					else{
+						System.out.println("Visibility must be public or private. Insert a new command:");
+					}
+				} 
+				
+				else if (action.equals("remove group") && log==true) {
+					server.println("remove group");
+					System.out.println("Insert group's name: ");
+					String group = user.readLine();
+					server.println(group);
+				} 
+				
+				else if (action.equals("add member") && log==true) {
+					server.println("add member");
+					System.out.println("Insert group's name: ");
+					String recipient = user.readLine();
+					System.out.println("Insert member's name: ");
+					String member = user.readLine();
+					server.println(recipient);
+					server.println(member);
+				} 
+				
+				else if (action.equals("remove me") && log==true) {
+					server.println("remove me");
+					System.out.println("Insert group's name: ");
+					String group = user.readLine();
+					server.println(group);
+				} 
+				
+				else if (action.equals("remove") && log==true) {
+					server.println("remove");
+					System.out.println("Insert group's name: ");
+					String group = user.readLine();
+					System.out.println("Insert person's name: ");
+					String person = user.readLine();
+					server.println(group);
+					server.println(person);
+				}
+				
+				else if(action.equals("request add") && log==true){
+					server.println("request add");
+					System.out.println("Insert group's name: ");
+					String group = user.readLine();
+					server.println(group);
+				
+				}
+				
+				else if(action.equals("view requests") && log==true){
+					server.println("view requests");
+					System.out.println("Insert group's name: ");
+					String group = user.readLine();
+					server.println(group);
+				
+				}
+				
+				else if(action.equals("make admin") && log==true){
+					server.println("make admin");
+					System.out.println("Insert group's name: ");
+					String group = user.readLine();
+					System.out.println("Insert person's name: ");
+					String person = user.readLine();
+					server.println(group);
+					server.println(person);
+				
+				}
+				
+				else if(action.equals("remove admin") && log==true){
+					server.println("remove admin");
+					System.out.println("Insert group's name: ");
+					String group = user.readLine();
+					System.out.println("Insert person's name: ");
+					String person = user.readLine();
+					server.println(group);
+					server.println(person);
+				
+				}
+				
+				else if(action.equals("accept") && log==true){
+					server.println("accept");
+					System.out.println("Insert group's name: ");
+					String group = user.readLine();
+					System.out.println("Insert person's name: ");
+					String person = user.readLine();
+					server.println(group);
+					server.println(person);
+				
+				}
+				
+				else if(action.equals("decline") && log==true){
+					server.println("decline");
+					System.out.println("Insert group's name: ");
+					String group = user.readLine();
+					System.out.println("Insert person's name: ");
+					String person = user.readLine();
+					server.println(group);
+					server.println(person);
+				
+				}
+				
+				else if(action.equals("change name") && log==true){
+					server.println("change name");
+					System.out.println("Insert old group's name: ");
+					String oldName = user.readLine();
+					System.out.println("Insert new name: ");
+					String newName = user.readLine();
+					server.println(oldName);
+					server.println(newName);
+				
+				}
+				
+				else if(action.equals("set status") && log==true){
+					server.println("set status");
+					System.out.println("Insert a status: ");
+					String status = user.readLine();
+					server.println(status);
+				
+				}
+				
+				else if(action.equals("view people") && log==true){
+					server.println("view people");
+				
+				}
+				
+				else if(action.equals("view people in group") && log==true){
+					server.println("view people in group");
+					System.out.println("Insert group's name:");
+					String group=user.readLine();
+					server.println(group);
+				
+				}
+				
+				else if(action.equals("view groups") && log==true){
+					server.println("view groups");
+				}
+				
 				else if (action.equals("logout") == true && log==true) {
 					server.println("logout");
+				}
+				
+				else if (action.equals("remove me") == true && log==false) {
+					System.out.println("You must register or log in.");
+				}
+				
+				else if (action.equals("remove") == true && log==false) {
+					System.out.println("You must register or log in.");
+				}
+				
+				else if (action.equals("create group") == true && log==false) {
+					System.out.println("You must register or log in.");
+				}
+				
+				else if (action.equals("add member") == true && log==false) {
+					System.out.println("You must register or log in.");
+				}
+				
+				else if (action.equals("request add") == true && log==false) {
+					System.out.println("You must register or log in.");
+				}
+				
+				else if (action.equals("view requests") == true && log==false) {
+					System.out.println("You must register or log in.");
+				}
+				
+				else if (action.equals("make admin") == true && log==false) {
+					System.out.println("You must register or log in.");
+				}
+				
+				else if (action.equals("accept") == true && log==false) {
+					System.out.println("You must register or log in.");
+				}
+				
+				else if (action.equals("decline") == true && log==false) {
+					System.out.println("You must register or log in.");
+				}
+				
+				else if (action.equals("change name") == true && log==false) {
+					System.out.println("You must register or log in.");
+				}
+				
+				else if (action.equals("set status") == true && log==false) {
+					System.out.println("You must register or log in.");
+				}
+				
+				else if (action.equals("view people") == true && log==false) {
+					System.out.println("You must register or log in.");
+				}
+				
+				else if (action.equals("view people in group") == true && log==false) {
+					System.out.println("You must register or log in.");
 				}
 				
 				else if(action.equals("message") && log==false){
@@ -124,10 +322,15 @@ public class ClientSender extends Thread {
 					System.out.println("You must log out.");
 				}
 				
+				else if(action.equals("view groups") && log==true){
+					System.out.println("You must log out.");
+				}
 				
 				
 				else
-					System.out.println("Choose an action: login, register, message, logout, quit.");
+					System.out.println("Choose an action: login, register, message, logout, quit, create group, view groups, "
+							+ "view people, view people in group, set status, change name, accept, decline, make admin, view requests, add member, request add"
+							+ "remove, remove me");
 			}
 
 		} catch (IOException e) {

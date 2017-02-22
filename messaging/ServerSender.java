@@ -30,9 +30,6 @@ public class ServerSender extends Thread {
       if(msg.getSender().equals("Server")){
     	  return;
       }
-      if(ServerReceiver.stopThread==false){
-    	  return;
-      }
       
     }
   }

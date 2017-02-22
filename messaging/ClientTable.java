@@ -31,6 +31,7 @@ public class ClientTable {
 	// Returns null if the nickname is not in the table:
 	public MessageQueue getQueue(String nickname) {
 		return queueTable.get(nickname);
+		
 	}
 
 	public void remove(String nickname) {
