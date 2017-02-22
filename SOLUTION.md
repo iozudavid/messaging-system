@@ -13,6 +13,15 @@ that the ClientReceiver thread ended and then just end the ClientReceiver.
 
 
 
+
+
+
+
+
+
+PART2
+
+
 -----------------------------------------------------------------Client Side--------------------------------------------------------------------------------------------
 
 ---Client---
@@ -141,6 +150,171 @@ If it is, it will add the message to its arraylist in messagesList, else it send
 When the ServerSender is started, it checks if there are any messages for the user in messagesList and send them if there are.
 Then it will check the queue and sends to the client when a message comes. It will stop when quit or logout is typed
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+PART3
+
+
+-----------------------------------------------------------------Client side------------------------------------------------------------------------------------------------
+
+---ClientSender---
+In ClientSender I added more commands for groups. If a user types "create group", he will need to insert the name and the visibility mode for creting the group.
+If the visibility is not public or private, there is no information sent to the server. "remove group" is for removing th entire group, it asks for the group's name and
+send it to the server. The "add member" is to add a member to a group. It asks for group's name and person's name. "remove me" is called to left a group and it also asks
+for the group's name. The "remove" command is for removing another person in a group and you will need to insert group's name and person's name. In order to request to be added
+to a group you will need to type "request add" and the group's name which you want to join. To view requests, you need to type "view requests" and then, the program will aks
+for the group's name. The command "make admin" is called if you want to make a person of a group an admin of that group. You will also need to type group's name and person's name.
+On the other part, "remove admin" is when you want to remove a person from admins, but the person will be still a member of that group, but not an admin. It will ask for the group's name
+and person's name. "accept" and "decline" commands are for requests. So, if you want to accept a request, you will type "accept", otherwise you will type "decline". Both will ask
+for group's name and person's name. If you want to change group's name, you need to type "change name". You will also type the actual name and the new name you want to change in.
+The "set status" command is to change your status. All people's status is visible when you type view people. The default status is an empty string. If you want to see
+the people which are registered, you need to type "view people". This will also show if they are online or offline. The "view people in group" command is to see the members of a group
+and if they are online or not. The "view groups" command is to show you all the groups. All these commands will work if you are loggedin. Otherwise, you will receive a message to
+login or register. If you type a command which is not in the list, you will receive a message with all the commands you can use.
+
+---Client and ClientReceiver--- are unchanged.
+
+
+
+----------------------------------------------------------------------------New classes--------------------------------------------------------------------------------
+---GroupList---
+This class contains three maps. Groups map has keys group names and values ArrayLists of strings in which are storred the members.
+Requests map has keys group names and values a list of strings in which are storred the add requests.
+Visibility map has keys group names and values a string for each group which is the type of visibility.
+This class contains informations about members, requests and visibility mode of all groups. It contains a few methods:
+changeName- takes as parameters the actual name and the new name and remove the group with the old name and create a new one with the new name, but the members, visibility and requests
+remains the same as there were for the old group
+addVisibility- adds the visibility mode for each group
+changeVisibility- changes the visibility of a group
+getVisibility- returns the visibility of the group
+verify- verifies if a group exists or not, checking in groups map
+verifyInRequests- check if there exists a map for a group in requests map
+addInUsers- checks if the group exists with verify method. If it exists, it adds the user to the list of users in groups map, else it creates a new list with the user and put it in groups map
+addRequest- it verifies if there is a map for the group. If it exists it adds the user to the list of requests in requests map, else it creates a new list with the user and put it in groups map
+isMember- it takes as parameters a username and a group and it checks if the username is in the list of members for that group
+isWaiting- it takes a userName and a groupName and checks if the username is in the list of requests for that group
+getUsersList- takes the group name as parameter and return the arraylist of members for that group
+getRequestsList- takes the group name as parameter and return the list of requests for that group
+get- prints informations about the group with members, requests and visibility
+getPublicGroups- takes the userName as parameter and returns a list with all the public groups and the private groups where the user is a member. The other private groups where the user
+is not a member can't be displayed as they are secret.
+writeIn- it writes in an arraylist members, requests and visibility as they can be written in an external file.
+removeUser- it removes a user from the members list of a group
+removeRequest- it removes a user from the requests list of a group
+remove- remove the group entirely, from the groups map, requests map and visibility map
+getMembers- returns a list with all the members of a group
+
+---AdminsList---
+This class contains a map which has keys group names and values ArrayLists of strings in which are storred the admins of the group.
+This class stores all the admins of each group. It contains a few methods: 
+changeName- takes as parameters the actual name and the new name and remove the group with the old name and create a new one with the new name, but the admins remains the same as there were for the 
+old group
+isAdmin- takes a username and a group name as parameters and return true if the user is an admin of that group, false otherwise
+add- it adds a username to the list of admins of a group
+getList- returns a list of the admins of the group
+get- prints all the adimns for wach group
+writeIn- return an arraylist of all admins of each group which will be used to write in an extrnal file
+removeAdmin- removes an admin of a group
+remove- remove a group and its list from the map
+
+
+---------------------------------------------------------------------------External files------------------------------------------------------------------------------------
+---groups.txt---
+This file will store all groups with all the members, requests and type of visibility.
+An example of how it works is:
+group1
+username1
+group1
+username2
+group2
+username1
+requests
+group1
+username3
+visibility
+group1
+public
+group2
+private
+
+---admins.txt---
+This file will store all the groups with all the admins.
+An example of how it works is:
+group1
+username1
+group1
+username2
+group2
+username2
+
+
+---------------------------------------------------------------------------Server side---------------------------------------------------------------------------------------
+---Server---
+I created two new BufferedReader and two new PrintWriter variables. Also, I created an object of type GroupList and another one of type AdminsList.
+The program reads from files each line and adds to each map a key and a value. Then, all the reader are closed. It generates for each client four PrintWriters, the new PrintWriters
+are out_groups and out_admins which will be used to write in the grops.txt file and admins.txt file. Also,  the ServerReceiver takes as parameters the new variables I mentioned before
+and the Server starts the ServerReceiver thread.
+
+---ServerReceiver---
+I changed the structure of this class. Instead of writing in if clauses, I made methods for each of commands came from the client. In this way, I can re-used the message method
+for each other method.
+The new methods:
+remove_group(group)- firstly checks if the group exists, then if the user is an admin. If they are true, it sends messages to the ehole group and remove it definetely.
+remove_admin(group, person)- also checks if the group exists and if the person is a member of the group and if the client is an admin. If the person is an admin and is the only one
+the operation can't be processed as the group will have no admins. Else, the person is removed from admins list.
+view_people_in_group(group)- it checks if the group is valid and if the client has the permission to view informations about the group (the client has the permision if the group is public
+or if the group is private but he is already a member of this group). Then it will prints to the user all the members of the group, if they are online or offline and if they are admins or
+simply users.
+e.g. ABCDE (online) admin
+view_people- prints all the users registered, prints whether they are online or offline and their status
+status(_status)- change the client's status in _status
+change_name(oldName, newName)- verifies if the group exists, if the client is a member and an admin.If the name already exist, the name won't change, else the name will change
+and all the members will receive a message with this information
+view_groups- prints "No groups" if there aren't any groups or prints all the public groups and the private ones where the client is a member. All the public groups will be printed
+whether the user is a member or not. This moethod is to print all the groups available to join.
+decline(group, person)- checks if the group exists, if the client is a member and if the client is an admin too. It decline a request if the request exists, otherwise will print that
+the person didn't require add.
+accept(group, person)- like decline, but here the person will be added to the group
+make_admin(group, member)- it verifies if the group exists, if the person is a member and if the client is an admin. If all are true, it checks if the person is already an admin.
+If it isn't the person will become an admin, else it will prints to the client that the person is already an admin.
+view_requests(group)- checks if the group exists and if the client is an admin. If they are true, it will prints the list of requests.
+messageToGroup(recipient, text)- it will print a message to all the members of a group. It is used in a lot of methods to inform the members about the changes of the group.
+request_add(group)- it verifies if the group exists, if the client is already a member, if the person already made a request and if the group is public. If all conditions are right,
+the request will be made.
+remove(group, member)- it checks if the group exists, if the person is a member of the group, if the client is an admin. If conditions are good, it will remove the user from group's users
+and if it is an admin from admins list of the group.
+remove_me(group)- it checks if the group exists, if the client is a member. If conditions are good, he will be removed from group's users and if he is an admin, if he is the only admin,
+another person will be made admin automatically. If the client is the only one in the group, the group will be totally removed.
+add_member(group, member)- it checks if the group exists, if the member exists and if the client is an admin. If these conditions are good, it checks if the person is already a member.
+If it isn't, the person will be added to the group and removed from requests list if he made a request.
+create_group(group, visibility)- it checks if the group exists, and if it isn't, the group will be created and the client will be added in users list and admins list.
+
+
+
+
+
+
+
+
+
+
+
+COMPILATION
+Create a classes folder near the messaging one and compile from  SWWAssignment1 with the command javac -d classes -cp classes messaging/*.java.
+RUNNING
+java -cp classes Server
+java -cp classes Client localhost
 
 
 https://git.cs.bham.ac.uk/dxi695/SWWAssignment1.git
